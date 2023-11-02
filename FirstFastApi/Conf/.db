@@ -1,0 +1,5 @@
+DEBUG=True
+DATABASE_URL=postgresql://localhost:3306/Sample
+DATABASE_USER=xiamisya
+DATABASE_PWD=Xiadmin#1
+DATABASE_NAME=Sample

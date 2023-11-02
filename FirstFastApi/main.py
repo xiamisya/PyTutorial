@@ -5,12 +5,24 @@ from typing import Annotated
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
 
+from DB.Database import Database
+
 app = FastAPI()
 
 
 @app.get("/")
 async def root():
-    return {"message", "Hello World"}
+    con = Database()
+    con.query("SELECT name, email FROM _user")
+    result = dict()
+    result.update({"q": "SELECT name, email FROM _user"})
+    if not con.cursor:
+        return dict
+
+    for (name, email) in con.cursor:
+        dict.update({name: email})
+    con.close()
+    return dict
 
 
 # uvicorn main:app --reload
