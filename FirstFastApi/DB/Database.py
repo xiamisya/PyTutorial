@@ -1,4 +1,5 @@
-import pymysql
+import mariadb
+import sys
 
 from starlette.applications import Starlette
 from starlette.config import Config
@@ -7,15 +8,14 @@ from starlette.datastructures import CommaSeparatedStrings, Secret
 
 class Database:
     def __init__(self):
-        print("Init Self")
-        config = Config("../Conf/.db")
-        self._conn = pymysql.connect(
+        config = Config("Conf/.db")
+        self._conn = mariadb.connect(
             host=config("DATABASE_URL", cast=str, default="postgresql://"),
-            user=config("DATABASE_USER", cast=str),
-            password=config("DATABASE_PWD", cast=str),
-            db=config("DATABASE_NAME", cast=str), charset="utf-8")
+            user=config("DATABASE_USER", cast=str, default="guest"),
+            password=config("DATABASE_PWD", cast=str, default=""),
+            db=config("DATABASE_NAME", cast=str, default=""),
+            port=3306)
         self._cursor = self._conn.cursor()
-        print("_cursor init")
 
     def __enter__(self):
         return self
@@ -29,7 +29,6 @@ class Database:
 
     @property
     def cursor(self):
-        print("_cursor access")
         return self._cursor
 
     def commit(self):

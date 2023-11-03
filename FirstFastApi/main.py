@@ -16,15 +16,11 @@ async def root():
     con.query("SELECT name, email FROM _user")
     result = dict()
     result.update({"q": "SELECT name, email FROM _user"})
-    if not con.cursor:
-        return dict
-
     for (name, email) in con.cursor:
-        dict.update({name: email})
+        print(name + email)
+        # dict.update({name: email})
     con.close()
-    return dict
-
-
+    return result
 # uvicorn main:app --reload
 # main: 파일 main.py (파이썬 "모듈").
 # app: main.py 내부의 app = FastAPI() 줄에서 생성한 오브젝트.
